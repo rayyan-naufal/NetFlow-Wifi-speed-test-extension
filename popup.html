@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>Network Telemetry</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-badge">
+        <svg viewBox="0 0 16 16" class="brand-svg" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path d="M1.5 5.5a10.5 10.5 0 0 1 13 0" stroke-linecap="round"/>
+          <path d="M4 8.5a7 7 0 0 1 8 0" stroke-linecap="round"/>
+          <path d="M6.5 11.5a3.5 3.5 0 0 1 3 0" stroke-linecap="round"/>
+          <circle cx="8" cy="14" r="1" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="brand-meta">
+        <span class="brand-name">NetFlow</span>
+        <span class="brand-version">v1.2 · telemetry</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="status-indicator" id="statusIndicator">
+        <span class="status-pip"></span>
+        <span id="connStatus">Ready</span>
+      </span>
+      <button id="btnSettings" class="btn-icon" title="Settings" aria-label="Settings">
+        <!-- Precision Sliders Icon -->
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 4h4m3 0h5M2 8h8m3 0h1M2 12h2m3 0h7" stroke-linecap="round"/>
+          <circle cx="7.5" cy="4" r="1.5" fill="var(--surface)"/>
+          <circle cx="11.5" cy="8" r="1.5" fill="var(--surface)"/>
+          <circle cx="5.5" cy="12" r="1.5" fill="var(--surface)"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Telemetry Metrics Grid -->
+  <section class="telemetry-grid" id="telemetryGrid">
+    <div class="tile" id="mPing">
+      <span class="tile-label">LATENCY</span>
+      <div class="tile-metric">
+        <span class="tile-val" id="vPing">—</span>
+        <span class="tile-unit">ms</span>
+      </div>
+      <span class="tile-sub" id="vJitter">jitter —</span>
+    </div>
+
+    <div class="tile" id="mDown">
+      <span class="tile-label">DOWNLOAD</span>
+      <div class="tile-metric">
+        <span class="tile-val" id="vDown">—</span>
+        <span class="tile-unit">Mbps</span>
+      </div>
+      <span class="tile-sub">bandwidth</span>
+    </div>
+
+    <div class="tile" id="mUp">
+      <span class="tile-label">UPLOAD</span>
+      <div class="tile-metric">
+        <span class="tile-val" id="vUp">—</span>
+        <span class="tile-unit">Mbps</span>
+      </div>
+      <span class="tile-sub">throughput</span>
+    </div>
+  </section>
+
+  <!-- Hero Telemetry Center -->
+  <main class="hero-stage">
+    <div class="telemetry-card" id="telemetryCard">
+      <div class="telemetry-status-row">
+        <div class="status-pills">
+          <span class="state-pill" id="phase">IDLE</span>
+          <span class="state-pill complete hidden" id="resultQuality"></span>
+        </div>
+        <span class="state-time" id="timeElapsed">00:00</span>
+      </div>
+
+      <!-- Live Testing View -->
+      <div class="live-stage" id="liveStage">
+        <div class="primary-readout">
+          <span class="readout-num" id="speed">0.00</span>
+          <span class="readout-unit" id="unit">Mbps</span>
+        </div>
+
+        <!-- Precision Gauge Track with Micro-Tick Marks -->
+        <div class="progress-bar-wrap">
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+            <!-- 7 calibrated tick notches -->
+            <div class="tick-notches">
+              <span class="notch" style="left: 0%;"></span>
+              <span class="notch" style="left: 16.6%;"></span>
+              <span class="notch" style="left: 33.3%;"></span>
+              <span class="notch" style="left: 50%;"></span>
+              <span class="notch" style="left: 66.6%;"></span>
+              <span class="notch" style="left: 83.3%;"></span>
+              <span class="notch" style="left: 100%;"></span>
+            </div>
+          </div>
+          <div class="progress-scale">
+            <span style="left: 0%;">0</span>
+            <span style="left: 16.6%;">10</span>
+            <span style="left: 33.3%;">50</span>
+            <span style="left: 50%;">100</span>
+            <span style="left: 66.6%;">250</span>
+            <span style="left: 83.3%;">500</span>
+            <span style="left: 100%;">1G</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Complete Summary View (All 3 metrics unified in one card) -->
+      <div class="complete-stage hidden" id="completeStage">
+        <div class="complete-speeds">
+          <div class="complete-metric">
+            <span class="complete-label"><span class="dir-arrow down">↓</span> DOWNLOAD</span>
+            <div class="complete-val-row">
+              <span class="complete-val" id="resDown">—</span>
+              <span class="complete-unit">Mbps</span>
+            </div>
+            <span class="complete-sub">bandwidth</span>
+          </div>
+          <div class="complete-metric">
+            <span class="complete-label"><span class="dir-arrow up">↑</span> UPLOAD</span>
+            <div class="complete-val-row">
+              <span class="complete-val" id="resUp">—</span>
+              <span class="complete-unit">Mbps</span>
+            </div>
+            <span class="complete-sub">throughput</span>
+          </div>
+        </div>
+
+        <div class="complete-latency-bar">
+          <div class="complete-lat-item">
+            <span class="complete-lat-k">LATENCY</span>
+            <span class="complete-lat-v"><strong id="resPing">—</strong> ms</span>
+          </div>
+          <span class="complete-lat-sep"></span>
+          <div class="complete-lat-item">
+            <span class="complete-lat-k">JITTER</span>
+            <span class="complete-lat-v"><strong id="resJitter">—</strong> ms</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tactile Action Button with Shortcut Badge -->
+      <button id="btnAction" class="action-btn">
+        <span class="btn-icon-wrap" id="actionIcon">
+          <svg viewBox="0 0 16 16" fill="currentColor">
+            <path d="M4 2.5v11l9-5.5z"/>
+          </svg>
+        </span>
+        <span id="btnActionText">Run Speed Test</span>
+        <kbd class="kbd-hint" id="kbdHint">Space</kbd>
+      </button>
+    </div>
+
+    <div id="errorMsg" class="error-strip hidden"></div>
+  </main>
+
+  <!-- Footer Diagnostics Bar -->
+  <footer class="diagnostics-bar">
+    <div class="diag-item">
+      <svg viewBox="0 0 16 16" class="diag-svg" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="3" width="12" height="10" rx="2"/>
+        <path d="M5 8h6M5 10.5h3"/>
+      </svg>
+      <div class="diag-content">
+        <span class="diag-title" id="ispName">Detecting Network...</span>
+        <span class="diag-meta" id="ipAddr">Public IP</span>
+      </div>
+    </div>
+    <div class="diag-item">
+      <svg viewBox="0 0 16 16" class="diag-svg" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="8" cy="8" r="6"/>
+        <path d="M2 8h12M8 2a9 9 0 0 1 0 12M8 2a9 9 0 0 0 0 12"/>
+      </svg>
+      <div class="diag-content">
+        <span class="diag-title" id="serverName">Cloudflare Edge</span>
+        <span class="diag-meta" id="serverLoc">Nearest Server</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Settings Drawer (No History) -->
+  <aside class="drawer" id="settings" aria-hidden="true">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 4h4m3 0h5M2 8h8m3 0h1M2 12h2m3 0h7" stroke-linecap="round"/>
+          <circle cx="7.5" cy="4" r="1.5" fill="var(--surface)"/>
+          <circle cx="11.5" cy="8" r="1.5" fill="var(--surface)"/>
+          <circle cx="5.5" cy="12" r="1.5" fill="var(--surface)"/>
+        </svg>
+        <span>Settings</span>
+      </div>
+      <button id="btnCloseSettings" class="btn-icon" aria-label="Close">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Theme Control -->
+    <div class="drawer-section">
+      <label class="section-heading">INTERFACE THEME</label>
+      <div class="segmented-control">
+        <button class="seg-btn active" data-theme-val="dark">
+          <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M13.5 9.8A5.5 5.5 0 0 1 6.2 2.5 6 6 0 1 0 13.5 9.8z"/>
+          </svg>
+          <span>Dark</span>
+        </button>
+        <button class="seg-btn" data-theme-val="light">
+          <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="8" cy="8" r="3"/>
+            <path d="M8 1.5v1.5M8 13v1.5M1.5 8h1.5M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1" stroke-linecap="round"/>
+          </svg>
+          <span>Light</span>
+        </button>
+        <button class="seg-btn" data-theme-val="system">
+          <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="2.5" width="12" height="8.5" rx="1.5"/>
+            <path d="M5.5 14h5M8 11v3" stroke-linecap="round"/>
+          </svg>
+          <span>Auto</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Auto Start Setting -->
+    <div class="drawer-section">
+      <label class="toggle-tile">
+        <div class="toggle-meta">
+          <span class="toggle-title">Auto-start on open</span>
+          <span class="toggle-desc">Automatically run benchmark when extension is opened</span>
+        </div>
+        <span class="switch-box">
+          <input type="checkbox" id="chkAuto" />
+          <span class="switch-thumb"></span>
+        </span>
+      </label>
+    </div>
+
+    <!-- Spacer to push System Telemetry Footer to bottom -->
+    <div class="drawer-spacer"></div>
+
+    <!-- System Telemetry Utility Footer in Drawer -->
+    <div class="drawer-sys-info">
+      <div class="sys-item">
+        <span class="sys-k">Engine</span>
+        <span class="sys-v">Cloudflare Anycast</span>
+      </div>
+      <div class="sys-item">
+        <span class="sys-k">Algorithm</span>
+        <span class="sys-v">80th-Percentile Trimmed</span>
+      </div>
+      <div class="sys-item">
+        <span class="sys-k">Shortcut</span>
+        <span class="sys-v"><kbd>Space</kbd> Start / Stop</span>
+      </div>
+    </div>
+  </aside>
+
+  <script src="js/gauge.js"></script>
+  <script src="js/speedtest-engine.js"></script>
+  <script src="js/popup.js"></script>
+</body>
+</html>
