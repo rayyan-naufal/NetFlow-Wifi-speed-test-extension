@@ -1,43 +1,27 @@
-# Netflow Extension
+# Netflow WiFi Speedtest Extension
 
-A lightweight Chrome extension (Manifest V3) for testing internet speed—ping, jitter, download, and upload—directly from the browser toolbar using Cloudflare's edge network (`speed.cloudflare.com`).
+**NetFlow** is a fast, lightweight browser extension that lets you check your WiFi and internet speed right from your toolbar—no extra tabs, ads, or clutter.
 
-## Features
+## What It Does
 
-- **Latency & Jitter**: Measures median RTT and jitter while subtracting Cloudflare's server-side processing time.
-- **Download & Upload**: Multi-stream throughput test (4 download streams, 3 upload streams) with a 2-second TCP warmup excluded from the final average.
-- **Connection Info**: Displays detected ISP, public IP address, and the connected Cloudflare edge server location.
-- **Themes & Settings**: Supports dark/light themes and optional auto-start when opening the popup, saved via `chrome.storage.local`.
-- **Zero Dependencies**: Built with plain HTML, CSS, and vanilla JavaScript.
+- **One-Click Speed Test**: Measure your **Download**, **Upload**, **Latency (Ping)**, and **Jitter** in seconds.
+- **Instant Quality Rating**: Automatically summarizes your connection quality (*Excellent*, *Fast*, *Good*, *Fair*, or *Slow*) once the test finishes.
+- **Network Details**: Shows your detected ISP, public IP address, and nearest test server location.
+- **Clean & Customizable**: Switch between **Dark**, **Light**, or **Auto (System)** themes, and optionally enable **Auto-start** so a test runs as soon as you open the popup.
+- **Keyboard Shortcuts**: Press `Space` to start or re-run a test, and `Esc` to cancel anytime.
 
-## Installation (Load Unpacked)
+## How to Install
 
-1. Clone or download this repository.
-2. Open `chrome://extensions` in Chrome (or any Chromium-based browser).
-3. Enable **Developer mode** in the top-right corner.
-4. Click **Load unpacked** and select the project folder.
+1. Download or clone this repository to your computer.
+2. Open `chrome://extensions` in Chrome (or any Chromium-based browser like Edge or Brave).
+3. Turn on **Developer mode** in the top-right corner.
+4. Click **Load unpacked** and choose the downloaded folder.
+5. Pin **NetFlow** to your toolbar and click its icon to start testing.
 
-## Project Structure
+## Under the Hood (Technical Notes)
 
-```text
-.
-├── manifest.json
-├── popup.html
-├── css/
-│   └── style.css
-├── js/
-│   ├── gauge.js
-│   ├── popup.js
-│   └── speedtest-engine.js
-├── icons/
-│   ├── icon-16.png
-│   ├── icon-48.png
-│   └── icon-128.png
-└── tools/
-    └── make-icons.ps1
-```
+For those curious about how it works:
 
-## Permissions
-
-- `storage`: Saves theme preference and auto-start setting locally.
-- `https://speed.cloudflare.com/*`: Runs ping, download, and upload requests against Cloudflare's speed test endpoints.
+- **Engine**: Uses Cloudflare's global edge network (`speed.cloudflare.com`) for low-latency, multi-stream download/upload testing with TCP warmup exclusion and trimmed-percentile averaging.
+- **Stack**: Built with Chrome **Manifest V3** and plain HTML, CSS, and vanilla JavaScript—zero external dependencies.
+- **Permissions**: Only requests `storage` (to save your theme and auto-start preference locally) and access to `https://speed.cloudflare.com/*` to run the speed test.
