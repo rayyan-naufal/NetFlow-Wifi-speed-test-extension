@@ -99,6 +99,7 @@
     el.liveStage.classList.remove('hidden');
     el.completeStage.classList.add('hidden');
     el.resultQuality.classList.add('hidden');
+    el.phase.classList.remove('hidden');
     el.telemetryCard.classList.remove('complete', 'testing');
     [el.mPing, el.mDown, el.mUp].forEach((m) => m.classList.remove('done'));
   }
@@ -185,8 +186,7 @@
       setActive(null);
       stopTimer();
       el.telemetryCard.classList.remove('testing');
-      el.phase.textContent = '✓ COMPLETE';
-      el.phase.className = 'state-pill complete';
+      el.phase.classList.add('hidden');
       el.statusIndicator.className = 'status-indicator done';
       el.connStatus.textContent = 'Finished';
       el.telemetryGrid.classList.add('hidden');
