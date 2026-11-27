@@ -99,7 +99,7 @@
     el.liveStage.classList.remove('hidden');
     el.completeStage.classList.add('hidden');
     el.resultQuality.classList.add('hidden');
-    el.telemetryCard.classList.remove('complete');
+    el.telemetryCard.classList.remove('complete', 'testing');
     [el.mPing, el.mDown, el.mUp].forEach((m) => m.classList.remove('done'));
   }
 
@@ -132,8 +132,9 @@
     resetValues();
     startTimer();
     setButtonState('cancel');
+    el.telemetryCard.classList.add('testing');
     el.statusIndicator.className = 'status-indicator testing';
-    el.connStatus.textContent = 'Testing...';
+    el.connStatus.textContent = 'Testing Latency...';
     gauge.setMode('download');
     gauge.reset();
 
@@ -154,6 +155,7 @@
       // 2) Download
       setActive(el.mDown);
       el.phase.textContent = 'DOWNLOAD';
+      el.connStatus.textContent = 'Testing Download...';
       el.unit.textContent = 'Mbps';
       el.speed.textContent = '0.00';
       const down = await test.measureDownload(({ mbps }) => {
@@ -167,6 +169,7 @@
       // 3) Upload
       setActive(el.mUp);
       el.phase.textContent = 'UPLOAD';
+      el.connStatus.textContent = 'Testing Upload...';
       el.unit.textContent = 'Mbps';
       el.speed.textContent = '0.00';
       gauge.setMode('upload');
@@ -181,6 +184,7 @@
       // 4) Complete
       setActive(null);
       stopTimer();
+      el.telemetryCard.classList.remove('testing');
       el.phase.textContent = '✓ COMPLETE';
       el.phase.className = 'state-pill complete';
       el.statusIndicator.className = 'status-indicator done';
@@ -212,6 +216,7 @@
     running = false;
     test = null;
     setActive(null);
+    el.telemetryCard.classList.remove('testing');
     if (success) {
       setButtonState('secondary');
     } else {
