@@ -117,16 +117,30 @@
       <!-- Complete Summary View (All 3 metrics unified in one card) -->
       <div class="complete-stage hidden" id="completeStage">
         <div class="complete-speeds">
-          <div class="complete-metric">
-            <span class="complete-label"><span class="dir-arrow down">↓</span> DOWNLOAD</span>
+          <div class="complete-metric down">
+            <span class="complete-label">
+              <span class="dir-arrow down" aria-hidden="true">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 3v10M4 9l4 4 4-4"/>
+                </svg>
+              </span>
+              DOWNLOAD
+            </span>
             <div class="complete-val-row">
               <span class="complete-val" id="resDown">—</span>
               <span class="complete-unit">Mbps</span>
             </div>
             <span class="complete-sub">bandwidth</span>
           </div>
-          <div class="complete-metric">
-            <span class="complete-label"><span class="dir-arrow up">↑</span> UPLOAD</span>
+          <div class="complete-metric up">
+            <span class="complete-label">
+              <span class="dir-arrow up" aria-hidden="true">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 13V3M4 7l4-4 4 4"/>
+                </svg>
+              </span>
+              UPLOAD
+            </span>
             <div class="complete-val-row">
               <span class="complete-val" id="resUp">—</span>
               <span class="complete-unit">Mbps</span>

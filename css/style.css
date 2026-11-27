@@ -420,38 +420,68 @@ button {
 
 .complete-metric {
   background: var(--surface-subtle);
-  border: 1px solid var(--status-success-border);
-  border-radius: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
   padding: 12px 12px 10px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
+.complete-metric.down {
+  border-color: var(--status-success-border);
+  background: linear-gradient(180deg, var(--status-success-surface) 0%, var(--surface-subtle) 55%);
+}
+
+.complete-metric.up {
+  border-color: var(--accent-border);
+  background: linear-gradient(180deg, var(--accent-surface) 0%, var(--surface-subtle) 55%);
+}
+
 .complete-label {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 10px;
+  gap: 7px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.6px;
-  color: var(--text-tertiary);
+  color: var(--text);
   font-family: var(--mono-font);
+}
+
+.dir-arrow {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.dir-arrow svg {
+  width: 13px;
+  height: 13px;
 }
 
 .dir-arrow.down {
   color: var(--status-ready);
+  background: var(--status-success-surface);
+  border: 1px solid var(--status-success-border);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
 }
 
 .dir-arrow.up {
   color: var(--accent);
+  background: var(--accent-surface);
+  border: 1px solid var(--accent-border);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.32);
 }
 
 .complete-val-row {
   display: flex;
   align-items: baseline;
   gap: 4px;
-  margin: 6px 0 3px;
+  margin: 8px 0 3px;
 }
 
 .complete-val {
