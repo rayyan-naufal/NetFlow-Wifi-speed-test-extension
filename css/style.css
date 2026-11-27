@@ -184,8 +184,12 @@ button {
 }
 
 .status-indicator.testing .status-pip {
-  background: var(--status-testing);
-  animation: pipPulse 1.1s ease-in-out infinite;
+  width: 9px;
+  height: 9px;
+  background: transparent;
+  border: 1.5px solid var(--status-testing-border);
+  border-top-color: var(--status-testing);
+  animation: pipSpin 0.75s linear infinite;
 }
 
 .status-indicator.done {
@@ -199,9 +203,8 @@ button {
   background: var(--status-ready);
 }
 
-@keyframes pipPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.35; transform: scale(0.8); }
+@keyframes pipSpin {
+  to { transform: rotate(360deg); }
 }
 
 .btn-icon {
