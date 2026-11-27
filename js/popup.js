@@ -56,12 +56,12 @@
   const fmt = (v) => (v >= 100 ? v.toFixed(0) : v >= 10 ? v.toFixed(1) : v.toFixed(2));
   const fmtMs = (v) => (v >= 10 ? v.toFixed(0) : v.toFixed(1));
 
-  function getQualityLabel(downMbps) {
-    if (downMbps >= 100) return 'Excellent';
-    if (downMbps >= 50) return 'Fast';
-    if (downMbps >= 20) return 'Good';
-    if (downMbps >= 5) return 'Fair';
-    return 'Slow';
+  function getQualityInfo(downMbps) {
+    if (downMbps >= 100) return { label: 'Excellent', cls: 'rating-excellent' };
+    if (downMbps >= 50) return { label: 'Fast', cls: 'rating-fast' };
+    if (downMbps >= 20) return { label: 'Good', cls: 'rating-good' };
+    if (downMbps >= 5) return { label: 'Fair', cls: 'rating-fair' };
+    return { label: 'Slow', cls: 'rating-slow' };
   }
 
   function setButtonState(state) {
@@ -197,8 +197,9 @@
       el.resUp.textContent = fmt(up);
       el.resPing.textContent = fmtMs(p.ping);
       el.resJitter.textContent = fmtMs(p.jitter);
-      el.resultQuality.textContent = getQualityLabel(down);
-      el.resultQuality.classList.remove('hidden');
+      const quality = getQualityInfo(down);
+      el.resultQuality.textContent = quality.label;
+      el.resultQuality.className = 'state-pill ' + quality.cls;
       finish(true);
     } catch (e) {
       stopTimer();

@@ -32,9 +32,9 @@
     setMode(mode) {
       if (!this.fill) return;
       if (mode === 'upload') {
-        this.fill.style.background = 'var(--status-ready)';
+        this.fill.style.background = 'var(--up)';
       } else {
-        this.fill.style.background = 'var(--accent)';
+        this.fill.style.background = 'var(--down)';
       }
     }
 
