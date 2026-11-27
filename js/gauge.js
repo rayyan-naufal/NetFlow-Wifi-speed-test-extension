@@ -21,6 +21,8 @@
   class Gauge {
     constructor(fillEl) {
       this.fill = typeof fillEl === 'string' ? document.getElementById(fillEl) : fillEl;
+      const wrap = this.fill ? this.fill.closest('.progress-bar-wrap') : null;
+      this.scaleLabels = wrap ? Array.from(wrap.querySelectorAll('.progress-scale span')) : [];
       this.current = 0;
       this.target = 0;
       this.raf = 0;
@@ -66,6 +68,14 @@
     _render() {
       if (!this.fill) return;
       this.fill.style.width = (this.current * 100).toFixed(1) + '%';
+      if (this.scaleLabels.length) {
+        const last = SCALE.length - 1;
+        for (let i = 0; i < this.scaleLabels.length; i++) {
+          const threshold = i / last;
+          const reached = this.current > 0.002 && this.current >= threshold - 0.002;
+          this.scaleLabels[i].classList.toggle('reached', reached);
+        }
+      }
     }
 
     destroy() {

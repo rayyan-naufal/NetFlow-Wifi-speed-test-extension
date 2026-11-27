@@ -24,6 +24,8 @@
   --status-testing-border: rgba(245, 158, 11, 0.35);
   --progress-bg: #1c1c20;
   --progress-fill: #3b82f6;
+  --tick-color: rgba(255, 255, 255, 0.42);
+  --tick-ext-color: rgba(255, 255, 255, 0.32);
   --kbd-bg: rgba(255, 255, 255, 0.08);
   --kbd-border: rgba(255, 255, 255, 0.15);
   --kbd-text: #a1a1aa;
@@ -56,6 +58,8 @@
   --status-testing-border: rgba(217, 119, 6, 0.3);
   --progress-bg: #e2e8f0;
   --progress-fill: #2563eb;
+  --tick-color: rgba(15, 23, 42, 0.32);
+  --tick-ext-color: rgba(15, 23, 42, 0.30);
   --kbd-bg: rgba(15, 23, 42, 0.06);
   --kbd-border: rgba(15, 23, 42, 0.15);
   --kbd-text: #475569;
@@ -512,9 +516,9 @@ button {
 
 .progress-track {
   width: 100%;
-  height: 6px;
+  height: 8px;
   background: var(--progress-bg);
-  border-radius: 3px;
+  border-radius: 4px;
   position: relative;
   overflow: hidden;
 }
@@ -523,7 +527,7 @@ button {
   width: 0%;
   height: 100%;
   background: var(--progress-fill);
-  border-radius: 3px;
+  border-radius: 4px;
   transition: width 0.12s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -531,39 +535,78 @@ button {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 2;
 }
 
 .notch {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 1px;
-  background: var(--border);
+  width: 1.5px;
+  background: var(--tick-color);
   transform: translateX(-50%);
+}
+
+.notch:first-child,
+.notch:last-child {
+  display: none;
 }
 
 .progress-scale {
   position: relative;
   width: 100%;
-  height: 14px;
-  margin-top: 5px;
+  height: 16px;
+  margin-top: 8px;
 }
 
 .progress-scale span {
   position: absolute;
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 600;
   font-family: var(--mono-font);
   color: var(--text-tertiary);
   transform: translateX(-50%);
+  transition: color 0.15s ease;
+}
+
+.progress-scale span::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1.5px;
+  height: 4px;
+  background: var(--tick-ext-color);
+  border-radius: 1px;
+  transition: background 0.15s ease;
 }
 
 .progress-scale span:first-child {
   transform: translateX(0);
 }
 
+.progress-scale span:first-child::before {
+  left: 0;
+  transform: none;
+}
+
 .progress-scale span:last-child {
   transform: translateX(-100%);
+}
+
+.progress-scale span:last-child::before {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+.progress-scale span.reached {
+  color: var(--text);
+}
+
+.progress-scale span.reached::before {
+  background: var(--text-secondary);
 }
 
 /* Action Button with Tactile Keyboard Hint */
