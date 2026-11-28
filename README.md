@@ -2,6 +2,12 @@
 
 **NetFlow** is a fast, lightweight browser extension that lets you check your WiFi and internet speed right from your toolbar—no extra tabs, ads, or clutter.
 
+<p align="center">
+  <img src="screenshots/dark-mode.png" alt="NetFlow Dark Mode" width="250" />
+  &nbsp;&nbsp;
+  <img src="screenshots/light-mode.png" alt="NetFlow Light Mode" width="250" />
+</p>
+
 ## What It Does
 
 - **One-Click Speed Test**: Measure your **Download**, **Upload**, **Latency (Ping)**, and **Jitter** in seconds.
